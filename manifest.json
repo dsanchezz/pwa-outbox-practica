@@ -1,0 +1,12 @@
+{
+  "name": "PWA Outbox - Registro de Incidencias",
+  "short_name": "Outbox",
+  "description": "Registro de incidencias en campo con sincronización offline (Outbox + Background Sync).",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf6ec",
+  "theme_color": "#efe3c8",
+  "lang": "es"
+}

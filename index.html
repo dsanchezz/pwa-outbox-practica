@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#efe3c8">
+  <title>PWA Outbox - Sincronización Offline</title>
+  <link rel="stylesheet" href="./proveedores/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="manifest" href="./manifest.json">
+</head>
+<body>
+  <header class="app-header py-3">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <h1 class="h5 mb-0 d-flex align-items-center gap-2">
+        Registro de Incidencias en Campo
+      </h1>
+    </div>
+  </header>
+
+  <main class="container app-main my-4">
+    <section class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h2 class="h6 card-title mb-3">Nueva Incidencia</h2>
+        <form id="form-incidencia" class="d-grid gap-2">
+          <input type="text" id="titulo" class="form-control" placeholder="Título del reporte (ej. Falla en válvula 4)" required>
+          <textarea id="descripcion" class="form-control" rows="3" placeholder="Detalle técnico..." required></textarea>
+          <button type="submit" class="btn btn-campo">Enviar Reporte</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h6 mb-0">Bandeja de Salida</h2>
+          <button id="btn-purgar" type="button" class="btn btn-campo-outline btn-sm">Purgar Sincronizados</button>
+        </div>
+        <ul id="lista-outbox" class="list-group"></ul>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal fade" id="modal-detalle" tabindex="-1" aria-labelledby="detalle-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="detalle-titulo"></h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p id="detalle-descripcion" class="detalle-descripcion mb-3"></p>
+          <dl class="row mb-0 small">
+            <dt class="col-5">Estado</dt>
+            <dd class="col-7"><span id="detalle-estado" class="badge"></span></dd>
+            <dt class="col-5">Folio local</dt>
+            <dd class="col-7" id="detalle-id"></dd>
+            <dt class="col-5">Creada</dt>
+            <dd class="col-7" id="detalle-creada"></dd>
+            <dt class="col-5">Sincronizada</dt>
+            <dd class="col-7 mb-0" id="detalle-sincronizada"></dd>
+          </dl>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-campo" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./proveedores/bootstrap.bundle.min.js"></script>
+  <script src="./db-helper.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

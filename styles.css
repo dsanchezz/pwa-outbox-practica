@@ -1,0 +1,49 @@
+/* styles.css - Paleta crema/beige/café, complemento de Bootstrap 5.3.3 */
+:root {
+  --campo-crema: #faf6ec;
+  --campo-beige: #efe3c8;
+  --campo-cafe: #8a6a43;
+  --campo-cafe-oscuro: #6f5436;
+  --campo-cafe-profundo: #5c4529;
+}
+
+body { background-color: var(--campo-crema); }
+
+.app-header {
+  background-color: var(--campo-beige);
+  border-bottom: 1px solid rgba(92, 69, 41, .15);
+}
+
+.app-main { max-width: 640px; }
+
+/* Botones: variables propias de Bootstrap con la paleta café */
+.btn-campo {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--campo-cafe);
+  --bs-btn-border-color: var(--campo-cafe);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--campo-cafe-oscuro);
+  --bs-btn-hover-border-color: var(--campo-cafe-oscuro);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--campo-cafe-profundo);
+  --bs-btn-active-border-color: var(--campo-cafe-profundo);
+  --bs-btn-focus-shadow-rgb: 138, 106, 67;
+}
+
+.btn-campo-outline {
+  --bs-btn-color: var(--campo-cafe-oscuro);
+  --bs-btn-border-color: var(--campo-cafe);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--campo-cafe);
+  --bs-btn-hover-border-color: var(--campo-cafe);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--campo-cafe-oscuro);
+  --bs-btn-active-border-color: var(--campo-cafe-oscuro);
+  --bs-btn-focus-shadow-rgb: 138, 106, 67;
+}
+
+/* Elementos de la bandeja clicables */
+#lista-outbox .list-group-item-action { cursor: pointer; }
+
+/* Respeta saltos de línea de la descripción en el detalle */
+.detalle-descripcion { white-space: pre-wrap; }
