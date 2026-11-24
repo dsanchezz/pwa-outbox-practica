@@ -170,6 +170,19 @@ function sincronizarPendientesFallback() {
     });
 }
 
+// ---------- Indicador de conexión (badge "En línea" / "Sin conexión") ----------
+const badgeRed = document.getElementById('estado-red');
+
+function actualizarIndicadorRed() {
+  const enLinea = navigator.onLine;
+  badgeRed.textContent = enLinea ? 'En línea' : 'Sin conexión';
+  badgeRed.className = 'badge rounded-pill ' + (enLinea ? 'text-bg-success' : 'text-bg-danger');
+}
+
+actualizarIndicadorRed();
+window.addEventListener('online', actualizarIndicadorRed);
+window.addEventListener('offline', actualizarIndicadorRed);
+
 // ---------- Eventos de red ----------
 window.addEventListener('online', () => {
 
