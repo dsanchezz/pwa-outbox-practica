@@ -5,7 +5,7 @@
 // Mini-wrapper de IndexedDB en el contexto del Service Worker
 importScripts('./db-helper.js');
 
-const CACHE_STATIC_NAME = 'static-outbox-v12';
+const CACHE_STATIC_NAME = 'static-outbox-v14';
 const STATIC_FILES = [
   './',
   './index.html',
@@ -15,6 +15,11 @@ const STATIC_FILES = [
   './db-helper.js',
   './app.js',
   './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable-512.png',
+  './icons/apple-touch-icon.png',
+  './icons/favicon-32.png',
 ];
 
 // ---------- Ciclo de vida ----------

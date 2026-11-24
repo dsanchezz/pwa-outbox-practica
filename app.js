@@ -138,7 +138,15 @@ function procesarEnvioReporte(datosFormulario) {
 }
 
 // ---------- UPDATE (fallback sin SyncManager): barrido y reenvío ----------
+// Candado: evita que dos barridos corran a la vez y dupliquen los POST
+let sincronizando = false;
+
 function sincronizarPendientesFallback() {
+  if (sincronizando) {
+    console.log('[Outbox] Ya hay un barrido en curso. Se omite este disparo.');
+    return Promise.resolve();
+  }
+  sincronizando = true;
   console.log('[Outbox] Conexión detectada. Buscando registros pendientes...');
 
   return obtenerTodosLosRegistros()
@@ -167,7 +175,44 @@ function sincronizarPendientesFallback() {
     .then(() => renderizarColaOutbox())
     .catch((error) => {
       console.error('[Outbox] Error durante la sincronización masiva:', error);
+      return renderizarColaOutbox();
+    })
+    .then(() => {
+      sincronizando = false;
     });
+}
+
+// ---------- Disparadores extra del fallback (Safari/iOS, Firefox) ----------
+// iOS congela la PWA en segundo plano: si la red volvió mientras estaba suspendida,
+// al regresar no llega ningún evento 'online'. Por eso también se revisa al volver a verla.
+const SIN_BACKGROUND_SYNC = !('SyncManager' in window);
+const INTERVALO_REINTENTO_MS = 30000;
+
+function intentarSincronizarFallback() {
+  if (SIN_BACKGROUND_SYNC && navigator.onLine && document.visibilityState === 'visible') {
+    sincronizarPendientesFallback();
+  }
+}
+
+if (SIN_BACKGROUND_SYNC) {
+  document.addEventListener('visibilitychange', intentarSincronizarFallback);
+  // pageshow con persisted=true: la página se restauró desde el bfcache sin recargar
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) intentarSincronizarFallback();
+  });
+  // Reintento suave: cubre errores del servidor (5xx) con la red activa, donde no hay evento 'online'.
+  // Solo lee IndexedDB; si no hay pendientes no hace ninguna petición de red.
+  setInterval(intentarSincronizarFallback, INTERVALO_REINTENTO_MS);
+}
+
+// ---------- Almacenamiento persistente ----------
+// Pide al navegador no borrar IndexedDB/caché por falta de espacio o inactividad
+// (en Safari sin instalar, los datos pueden borrarse tras 7 días sin uso).
+if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persisted()
+    .then((yaPersistente) => yaPersistente || navigator.storage.persist())
+    .then((persistente) => console.log('[Storage] Almacenamiento persistente:', persistente))
+    .catch((error) => console.warn('[Storage] No se pudo solicitar persistencia:', error));
 }
 
 // ---------- Indicador de conexión (badge "En línea" / "Sin conexión") ----------
